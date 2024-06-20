@@ -93,7 +93,7 @@ func UpdateBook(id string, reqData *[]byte) (int, string) {
 
 	book.Id = n
 
-	err = db.UpdBook(&book)
+	err = db.UpdBook(&book, nil)
 	if err != nil {
 		serr1, ok1 := err.(*myerr.ErrRecordNotFound)
 		if ok1 {

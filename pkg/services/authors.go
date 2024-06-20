@@ -97,7 +97,7 @@ func UpdateAuthor(id string, reqData *[]byte) (int, string) {
 
 	author.Id = n
 
-	err = db.UpdAuthor(&author)
+	err = db.UpdAuthor(&author, nil)
 	if err != nil {
 		serr, ok := err.(*myerr.ErrRecordNotFound)
 		if ok {

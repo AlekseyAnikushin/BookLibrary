@@ -10,7 +10,7 @@ import (
 )
 
 func AddBook(b *entities.Book) (int, error) {
-	err := checkAuthor(b.AuthorId)
+	err := checkAuthor(b.AuthorId, nil)
 	if err != nil {
 		return 0, err
 	}
@@ -64,17 +64,23 @@ func GetBooks(id int) ([]entities.Book, error) {
 	return Books, nil
 }
 
-func UpdBook(b *entities.Book) error {
-	err := checkAuthor(b.AuthorId)
+func UpdBook(b *entities.Book, tx *sql.Tx) error {
+	err := checkAuthor(b.AuthorId, tx)
 	if err != nil {
 		return err
 	}
 
 	var res sql.Result
+	var query string
 	if len(b.Isbn) > 0 {
-		res, err = db.Exec(fmt.Sprintf("UPDATE public.Books SET \"Title\"='%s', \"AuthorID\"='%d', \"Year\"='%d', \"ISBN\"='%s' WHERE \"ID\"=%d", b.Title, b.AuthorId, b.Year, b.Isbn, b.Id))
+		query = fmt.Sprintf("UPDATE public.Books SET \"Title\"='%s', \"AuthorID\"='%d', \"Year\"='%d', \"ISBN\"='%s' WHERE \"ID\"=%d", b.Title, b.AuthorId, b.Year, b.Isbn, b.Id)
 	} else {
-		res, err = db.Exec(fmt.Sprintf("UPDATE public.Books SET \"Title\"='%s', \"AuthorID\"='%d', \"Year\"='%d', \"ISBN\"=NULL WHERE \"ID\"=%d", b.Title, b.AuthorId, b.Year, b.Id))
+		query = fmt.Sprintf("UPDATE public.Books SET \"Title\"='%s', \"AuthorID\"='%d', \"Year\"='%d', \"ISBN\"=NULL WHERE \"ID\"=%d", b.Title, b.AuthorId, b.Year, b.Id)
+	}
+	if tx == nil {
+		res, err = db.Exec(query)
+	} else {
+		res, err = tx.Exec(query)
 	}
 	if err != nil {
 		return err
@@ -102,9 +108,15 @@ func DelBook(id int) error {
 	return nil
 }
 
-func checkAuthor(id int) error {
+func checkAuthor(id int, tx *sql.Tx) error {
 	var a uint64
-	err := db.QueryRow(fmt.Sprintf("SELECT COUNT(\"ID\") FROM public.Authors WHERE \"ID\"=%d", id)).Scan(&a)
+	var err error
+	query := fmt.Sprintf("SELECT COUNT(\"ID\") FROM public.Authors WHERE \"ID\"=%d", id)
+	if tx == nil {
+		err = db.QueryRow(query).Scan(&a)
+	} else {
+		err = tx.QueryRow(query).Scan(&a)
+	}
 	if err != nil {
 		return err
 	}

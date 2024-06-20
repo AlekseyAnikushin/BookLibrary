@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"fmt"
 	"strconv"
 
@@ -54,8 +55,16 @@ func GetAuthors(id int) ([]entities.Author, error) {
 	return authors, nil
 }
 
-func UpdAuthor(a *entities.Author) error {
-	res, err := db.Exec(fmt.Sprintf("UPDATE public.authors SET \"Name\"='%s', \"Surname\"='%s', \"Biography\"='%s', \"Birthdate\"='%s' WHERE \"ID\"=%d", a.Name, a.Surname, a.Biography, a.Birthdate, a.Id))
+func UpdAuthor(a *entities.Author, tx *sql.Tx) error {
+	var res sql.Result
+	var err error
+
+	query := fmt.Sprintf("UPDATE public.authors SET \"Name\"='%s', \"Surname\"='%s', \"Biography\"='%s', \"Birthdate\"='%s' WHERE \"ID\"=%d", a.Name, a.Surname, a.Biography, a.Birthdate, a.Id)
+	if tx == nil {
+		res, err = db.Exec(query)
+	} else {
+		res, err = tx.Exec(query)
+	}
 	if err != nil {
 		return err
 	}

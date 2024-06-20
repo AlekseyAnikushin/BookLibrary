@@ -49,6 +49,10 @@ func UpdateBookAndAuthor(reqData *[]byte, bookId string, authorId string) (int, 
 		if ok2 {
 			return http.StatusInternalServerError, serr2.Error()
 		}
+		serr3, ok3 := err.(*myerr.ErrAuthorNotFound)
+		if ok3 {
+			return http.StatusBadRequest, serr3.Error()
+		}
 		return http.StatusInternalServerError, "Database error"
 	}
 
