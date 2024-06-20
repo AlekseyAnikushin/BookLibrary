@@ -6,7 +6,9 @@ COPY go.mod go.sum ./
 
 RUN go mod tidy
 
-COPY *.go ./
+COPY cmd ./
+
+COPY pkg ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /booklib
 
