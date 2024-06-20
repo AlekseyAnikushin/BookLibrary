@@ -12,7 +12,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /booklib
 
 EXPOSE 8080
 
-ENV POSTGRES_HOST: "postgres_anikushin"
+ENV POSTGRES_HOST: "postgres"
 ENV POSTGRES_PORT: "5432"
 ENV POSTGRES_DATABASE: "library"
 ENV POSTGRES_USER: "go_user"
