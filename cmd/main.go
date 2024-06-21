@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	db "github.com/AlekseyAnikushin/book_library/pkg/database"
-	handlers "github.com/AlekseyAnikushin/book_library/pkg/handlers"
+	db "booklib/pkg/database"
+	handlers "booklib/pkg/handlers"
 )
 
 func main() {

@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	db "github.com/AlekseyAnikushin/book_library/pkg/database"
-	entities "github.com/AlekseyAnikushin/book_library/pkg/entities"
-	myerr "github.com/AlekseyAnikushin/book_library/pkg/my_errors"
+	db "booklib/pkg/database"
+	entities "booklib/pkg/entities"
+	myerr "booklib/pkg/my_errors"
 )
 
 func GetBooks() (int, string, []byte) {

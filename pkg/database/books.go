@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
-	entities "github.com/AlekseyAnikushin/book_library/pkg/entities"
-	myerr "github.com/AlekseyAnikushin/book_library/pkg/my_errors"
+	entities "booklib/pkg/entities"
+	myerr "booklib/pkg/my_errors"
 )
 
 func AddBook(b *entities.Book) (int, error) {

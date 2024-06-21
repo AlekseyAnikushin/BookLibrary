@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	db "github.com/AlekseyAnikushin/book_library/pkg/database"
-	entities "github.com/AlekseyAnikushin/book_library/pkg/entities"
-	myerr "github.com/AlekseyAnikushin/book_library/pkg/my_errors"
+	db "booklib/pkg/database"
+	entities "booklib/pkg/entities"
+	myerr "booklib/pkg/my_errors"
 )
 
 func UpdateBookAndAuthor(reqData *[]byte, bookId string, authorId string) (int, string) {
