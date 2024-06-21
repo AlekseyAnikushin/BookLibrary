@@ -1,7 +1,7 @@
 package database
 
 import (
-	entities "booklib/pkg/entities"
+	entities "github.com/AlekseyAnikushin/book_library/pkg/entities"
 )
 
 func UpdBookAndAuthor(ba *entities.BookAndAuthor) error {
