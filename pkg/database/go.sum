@@ -1,4 +1,6 @@
-github.com/AlekseyAnikushin/book_library v1.0.0 h1:R8NPekR99qmqlclHm+vzPa2+yOSrKGgCMIfpghw+Lqk=
-github.com/AlekseyAnikushin/book_library v1.0.0/go.mod h1:0nn5dl/kR0i6CcSIH5lv4yQPhKXm8zexqDKUpL6aBho=
+github.com/AlekseyAnikushin/book_library/pkg/entities v0.0.0-20240621113459-a9fc1bb68b67 h1:7mQi52Bx/I7OBrCAym/J1mMKP0G/i0+Sxncpf/fflro=
+github.com/AlekseyAnikushin/book_library/pkg/entities v0.0.0-20240621113459-a9fc1bb68b67/go.mod h1:UvB34EN1gkUSQs3HOG8RPZapqeT1AzWpih9LIfCzM2Y=
+github.com/AlekseyAnikushin/book_library/pkg/my_errors v0.0.0-20240621113459-a9fc1bb68b67 h1:3/IL/HwY/ujcW3Dsp7K6l+MoEZnwfYPkoI3airnu/HE=
+github.com/AlekseyAnikushin/book_library/pkg/my_errors v0.0.0-20240621113459-a9fc1bb68b67/go.mod h1:VC1/+5sD5yMGfvQrx82IBLBsMvl35Adyk1Qo2Irk5w8=
 github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
 github.com/lib/pq v1.10.9/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
