@@ -2,10 +2,11 @@ FROM golang:1.22.1
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-
 COPY cmd ./
 COPY pkg ./
+
+RUN go mod init github.com/AlekseyAnikushin/book_library
+RUN go get github.com/lib/pq
 
 RUN go mod tidy
 
