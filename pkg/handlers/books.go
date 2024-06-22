@@ -8,48 +8,74 @@ import (
 )
 
 func addBook(res http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
-	b, err := io.ReadAll(req.Body)
-	if err != nil {
-		writeResponse(res, "Error reading the request body", http.StatusBadRequest, nil)
-		return
-	}
-	if len(b) == 0 {
-		writeResponse(res, "The request body is empty", http.StatusBadRequest, nil)
-		return
-	}
+	ch := make(chan response)
+	go func() {
+		defer req.Body.Close()
+		b, err := io.ReadAll(req.Body)
+		if err != nil {
+			ch <- response{Code: http.StatusBadRequest, Message: "Error reading the request body"}
+			return
+		}
+		if len(b) == 0 {
+			ch <- response{Code: http.StatusBadRequest, Message: "The request body is empty"}
+			return
+		}
 
-	resultCode, resultMsg := services.AddBook(&b)
-	writeResponse(res, resultMsg, resultCode, nil)
+		resultCode, resultMsg := services.AddBook(&b)
+		ch <- response{Code: resultCode, Message: resultMsg}
+
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
 
 func getBooks(res http.ResponseWriter, req *http.Request) {
-	resultCode, resultMsg, resultData := services.GetBooks()
-	writeResponse(res, resultMsg, resultCode, resultData)
+	ch := make(chan response)
+	go func() {
+		resultCode, resultMsg, resultData := services.GetBooks()
+		ch <- response{Code: resultCode, Message: resultMsg, Result: resultData}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
 
 func getBook(res http.ResponseWriter, req *http.Request) {
-	resultCode, resultMsg, resultData := services.GetBook(req.PathValue("id"))
-	writeResponse(res, resultMsg, resultCode, resultData)
+	ch := make(chan response)
+	go func() {
+		resultCode, resultMsg, resultData := services.GetBook(req.PathValue("id"))
+		ch <- response{Code: resultCode, Message: resultMsg, Result: resultData}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
 
 func updBook(res http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
-	b, err := io.ReadAll(req.Body)
-	if err != nil {
-		writeResponse(res, "Error reading the request body", http.StatusBadRequest, nil)
-		return
-	}
-	if len(b) == 0 {
-		writeResponse(res, "The request body is empty", http.StatusBadRequest, nil)
-		return
-	}
+	ch := make(chan response)
+	go func() {
+		defer req.Body.Close()
+		b, err := io.ReadAll(req.Body)
+		if err != nil {
+			ch <- response{Code: http.StatusBadRequest, Message: "Error reading the request body"}
+			return
+		}
+		if len(b) == 0 {
+			ch <- response{Code: http.StatusBadRequest, Message: "The request body is empty"}
+			return
+		}
 
-	resultCode, resultMsg := services.UpdateBook(req.PathValue("id"), &b)
-	writeResponse(res, resultMsg, resultCode, nil)
+		resultCode, resultMsg := services.UpdateBook(req.PathValue("id"), &b)
+		ch <- response{Code: resultCode, Message: resultMsg}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
 
 func delBook(res http.ResponseWriter, req *http.Request) {
-	resultCode, resultMsg := services.DeleteBook(req.PathValue("id"))
-	writeResponse(res, resultMsg, resultCode, nil)
+	ch := make(chan response)
+	go func() {
+		resultCode, resultMsg := services.DeleteBook(req.PathValue("id"))
+		ch <- response{Code: resultCode, Message: resultMsg}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }

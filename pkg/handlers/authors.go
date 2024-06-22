@@ -8,48 +8,73 @@ import (
 )
 
 func addAuthor(res http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
-	a, err := io.ReadAll(req.Body)
-	if err != nil {
-		writeResponse(res, "Error reading the request body", http.StatusBadRequest, nil)
-		return
-	}
-	if len(a) == 0 {
-		writeResponse(res, "The request body is empty", http.StatusBadRequest, nil)
-		return
-	}
+	ch := make(chan response)
+	go func() {
+		defer req.Body.Close()
+		a, err := io.ReadAll(req.Body)
+		if err != nil {
+			ch <- response{Code: http.StatusBadRequest, Message: "Error reading the request body"}
+			return
+		}
+		if len(a) == 0 {
+			ch <- response{Code: http.StatusBadRequest, Message: "The request body is empty"}
+			return
+		}
 
-	resultCode, resultMsg := services.AddAuthor(&a)
-	writeResponse(res, resultMsg, resultCode, nil)
+		resultCode, resultMsg := services.AddAuthor(&a)
+		ch <- response{Code: resultCode, Message: resultMsg}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
 
 func getAuthors(res http.ResponseWriter, req *http.Request) {
-	resultCode, resultMsg, resultData := services.GetAuthors()
-	writeResponse(res, resultMsg, resultCode, resultData)
+	ch := make(chan response)
+	go func() {
+		resultCode, resultMsg, resultData := services.GetAuthors()
+		ch <- response{Code: resultCode, Message: resultMsg, Result: resultData}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
 
 func getAuthor(res http.ResponseWriter, req *http.Request) {
-	resultCode, resultMsg, resultData := services.GetAuthor(req.PathValue("id"))
-	writeResponse(res, resultMsg, resultCode, resultData)
+	ch := make(chan response)
+	go func() {
+		resultCode, resultMsg, resultData := services.GetAuthor(req.PathValue("id"))
+		ch <- response{Code: resultCode, Message: resultMsg, Result: resultData}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
 
 func updAuthor(res http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
-	a, err := io.ReadAll(req.Body)
-	if err != nil {
-		writeResponse(res, "Error reading the request body", http.StatusBadRequest, nil)
-		return
-	}
-	if len(a) == 0 {
-		writeResponse(res, "The request body is empty", http.StatusBadRequest, nil)
-		return
-	}
+	ch := make(chan response)
+	go func() {
+		defer req.Body.Close()
+		a, err := io.ReadAll(req.Body)
+		if err != nil {
+			ch <- response{Code: http.StatusBadRequest, Message: "Error reading the request body"}
+			return
+		}
+		if len(a) == 0 {
+			ch <- response{Code: http.StatusBadRequest, Message: "The request body is empty"}
+			return
+		}
 
-	resultCode, resultMsg := services.UpdateAuthor(req.PathValue("id"), &a)
-	writeResponse(res, resultMsg, resultCode, nil)
+		resultCode, resultMsg := services.UpdateAuthor(req.PathValue("id"), &a)
+		ch <- response{Code: resultCode, Message: resultMsg}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
 
 func delAuthor(res http.ResponseWriter, req *http.Request) {
-	resultCode, resultMsg := services.DeleteAuthor(req.PathValue("id"))
-	writeResponse(res, resultMsg, resultCode, nil)
+	ch := make(chan response)
+	go func() {
+		resultCode, resultMsg := services.DeleteAuthor(req.PathValue("id"))
+		ch <- response{Code: resultCode, Message: resultMsg}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }

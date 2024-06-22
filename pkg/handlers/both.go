@@ -8,17 +8,22 @@ import (
 )
 
 func updBookAuthor(res http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
-	ba, err := io.ReadAll(req.Body)
-	if err != nil {
-		writeResponse(res, "Error reading the request body", http.StatusBadRequest, nil)
-		return
-	}
-	if len(ba) == 0 {
-		writeResponse(res, "The request body is empty", http.StatusBadRequest, nil)
-		return
-	}
+	ch := make(chan response)
+	go func() {
+		defer req.Body.Close()
+		ba, err := io.ReadAll(req.Body)
+		if err != nil {
+			ch <- response{Code: http.StatusBadRequest, Message: "Error reading the request body"}
+			return
+		}
+		if len(ba) == 0 {
+			ch <- response{Code: http.StatusBadRequest, Message: "The request body is empty"}
+			return
+		}
 
-	resultCode, resultMsg := services.UpdateBookAndAuthor(&ba, req.PathValue("book_id"), req.PathValue("author_id"))
-	writeResponse(res, resultMsg, resultCode, nil)
+		resultCode, resultMsg := services.UpdateBookAndAuthor(&ba, req.PathValue("book_id"), req.PathValue("author_id"))
+		ch <- response{Code: resultCode, Message: resultMsg}
+	}()
+	resp := <-ch
+	writeResponse(res, &resp)
 }
