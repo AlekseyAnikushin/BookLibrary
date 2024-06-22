@@ -4,12 +4,6 @@ import (
 	"net/http"
 )
 
-type response struct {
-	Code    int
-	Message string
-	Result  []byte
-}
-
 var mux *http.ServeMux
 
 func GetMux() *http.ServeMux {

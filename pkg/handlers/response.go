@@ -5,6 +5,12 @@ import (
 	"net/http"
 )
 
+type response struct {
+	Code    int
+	Message string
+	Result  []byte
+}
+
 func writeResponse(w http.ResponseWriter, resp *response) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(resp.Code)
