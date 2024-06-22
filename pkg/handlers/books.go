@@ -10,8 +10,8 @@ import (
 func addBook(res http.ResponseWriter, req *http.Request) {
 	ch := make(chan response)
 	go func() {
-		defer req.Body.Close()
 		b, err := io.ReadAll(req.Body)
+		req.Body.Close()
 		if err != nil {
 			ch <- response{Code: http.StatusBadRequest, Message: "Error reading the request body"}
 			return
@@ -52,8 +52,8 @@ func getBook(res http.ResponseWriter, req *http.Request) {
 func updBook(res http.ResponseWriter, req *http.Request) {
 	ch := make(chan response)
 	go func() {
-		defer req.Body.Close()
 		b, err := io.ReadAll(req.Body)
+		req.Body.Close()
 		if err != nil {
 			ch <- response{Code: http.StatusBadRequest, Message: "Error reading the request body"}
 			return
