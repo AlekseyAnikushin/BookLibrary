@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 
-	services "book_library/pkg/services"
+	services "services"
 )
 
 func addBook(res http.ResponseWriter, req *http.Request) {

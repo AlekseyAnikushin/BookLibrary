@@ -1,12 +1,12 @@
-package database
+package storages
 
 import (
 	"database/sql"
 	"fmt"
 	"strconv"
 
-	entities "book_library/pkg/entities"
-	myerr "book_library/pkg/my_errors"
+	entities "entities"
+	myerr "my_errors"
 )
 
 func AddAuthor(a *entities.Author) (int, error) {

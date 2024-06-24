@@ -1,7 +1,7 @@
-package database
+package storages
 
 import (
-	entities "book_library/pkg/entities"
+	entities "entities"
 )
 
 func UpdBookAndAuthor(ba *entities.BookAndAuthor) error {

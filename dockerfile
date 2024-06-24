@@ -4,21 +4,24 @@ WORKDIR /app
 
 COPY go.mod go.sum ./
 
+RUN go mod tidy
+
+RUN go get github.com/lib/pq
+
 COPY cmd ./
 COPY pkg ./
 
-RUN go install ./entities
-COPY pkg/entities /usr/local/go/src/book_library/pkg/entities
-RUN go install ./my_errors
-COPY pkg/my_errors /usr/local/go/src/book_library/pkg/my_errors
-RUN go install ./database
-COPY pkg/database /usr/local/go/src/book_library/pkg/database
-RUN go install ./services
-COPY pkg/services /usr/local/go/src/book_library/pkg/services
-RUN go install ./handlers
-COPY pkg/handlers /usr/local/go/src/book_library/pkg/handlers
+COPY pkg/entities /usr/local/go/src/entities
+COPY pkg/my_errors /usr/local/go/src/my_errors
+COPY pkg/storages /usr/local/go/src/storages
+COPY pkg/services /usr/local/go/src/services
+COPY pkg/handlers /usr/local/go/src/handlers
 
-RUN go mod tidy
+RUN go install entities
+RUN go install my_errors
+RUN go install storages
+RUN go install services
+RUN go install handlers
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /booklib
 

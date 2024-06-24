@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	db "book_library/pkg/database"
-	entities "book_library/pkg/entities"
-	myerr "book_library/pkg/my_errors"
+	entities "entities"
+	myerr "my_errors"
+	db "storages"
 )
 
 func GetBooks() (int, string, []byte) {

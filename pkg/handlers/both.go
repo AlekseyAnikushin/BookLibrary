@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 
-	services "book_library/pkg/services"
+	services "services"
 )
 
 func updBookAuthor(res http.ResponseWriter, req *http.Request) {
