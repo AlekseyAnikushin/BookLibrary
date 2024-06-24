@@ -17,7 +17,6 @@ func main() {
 	dbErr := db.InitDB()
 	if dbErr != nil {
 		log.Fatalln("Database connection error: ", dbErr.Error())
-		return
 	}
 
 	if err := httpServer.ListenAndServe(); err != nil {

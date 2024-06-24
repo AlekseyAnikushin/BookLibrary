@@ -1,18 +1,16 @@
 services:
   postgres:
     image: postgres
-    container_name: postgres_anikushin
+    container_name: postgres
     environment:
       POSTGRES_DB: "library"
       POSTGRES_USER: "go_user"
       POSTGRES_PASSWORD: "P@ssw0rd"
     volumes:
       - .:/docker-entrypoint-initdb.d
-    ports:
-      - "5432:5432"
   backend:
     build: .
-    container_name: go_anikushin
+    container_name: backend
     ports:
       - "8080:8080"
     depends_on:

@@ -47,7 +47,10 @@ func InitDB() error {
 	db, err = sql.Open("postgres", conString)
 
 	if err != nil {
-		return err
+		db, err = sql.Open("postgres", conString)
+		if err != nil {
+			return err
+		}
 	}
 
 	err = db.Ping()
