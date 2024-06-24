@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 
-	services "github.com/AlekseyAnikushin/book_library/pkg/services"
+	services "book_library/pkg/services"
 )
 
 func addAuthor(res http.ResponseWriter, req *http.Request) {

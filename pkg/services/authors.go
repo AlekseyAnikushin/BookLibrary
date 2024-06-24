@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	db "github.com/AlekseyAnikushin/book_library/pkg/database"
-	entities "github.com/AlekseyAnikushin/book_library/pkg/entities"
-	myerr "github.com/AlekseyAnikushin/book_library/pkg/my_errors"
+	db "book_library/pkg/database"
+	entities "book_library/pkg/entities"
+	myerr "book_library/pkg/my_errors"
 )
 
 func GetAuthors() (int, string, []byte) {

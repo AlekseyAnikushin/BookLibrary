@@ -1,4 +1,4 @@
-module github.com/AlekseyAnikushin/book_library
+module book_library
 
 go 1.22.1
 
