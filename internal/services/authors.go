@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	entities "entities"
-	myerr "my_errors"
-	db "storages"
+	"book_library/internal/entities"
+	myerr "book_library/internal/my_errors"
+	db "book_library/internal/storages"
 )
 
 func GetAuthors() (int, string, []byte) {

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
-	entities "entities"
-	myerr "my_errors"
+	"book_library/internal/entities"
+	myerr "book_library/internal/my_errors"
 )
 
 func AddBook(b *entities.Book) (int, error) {

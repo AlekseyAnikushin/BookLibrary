@@ -9,21 +9,9 @@ RUN go mod tidy
 RUN go get github.com/lib/pq
 
 COPY cmd ./
-COPY pkg ./
+COPY internal ./
 
-COPY pkg/entities /usr/local/go/src/entities
-COPY pkg/my_errors /usr/local/go/src/my_errors
-COPY pkg/storages /usr/local/go/src/storages
-COPY pkg/services /usr/local/go/src/services
-COPY pkg/handlers /usr/local/go/src/handlers
-
-RUN go install entities
-RUN go install my_errors
-RUN go install storages
-RUN go install services
-RUN go install handlers
-
-RUN CGO_ENABLED=0 GOOS=linux go build -o /booklib
+RUN CGO_ENABLED=0 GOOS=linux go build -o /booklib ./cmd/main.go
 
 EXPOSE 8080
 

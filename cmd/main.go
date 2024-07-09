@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	handlers "handlers"
-	db "storages"
+	"book_library/internal/handlers"
+	db "book_library/internal/storages"
 )
 
 func main() {
