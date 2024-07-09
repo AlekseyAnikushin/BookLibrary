@@ -8,8 +8,8 @@ RUN go mod tidy
 
 RUN go get github.com/lib/pq
 
-COPY cmd ./
-COPY internal ./
+COPY cmd ./cmd
+COPY internal ./internal
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /booklib ./cmd/main.go
 

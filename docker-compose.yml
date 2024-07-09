@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: "go_user"
       POSTGRES_PASSWORD: "P@ssw0rd"
     volumes:
-      - .:/docker-entrypoint-initdb.d
+      - ./internal/migrate:/docker-entrypoint-initdb.d
   backend:
     build: .
     container_name: backend
